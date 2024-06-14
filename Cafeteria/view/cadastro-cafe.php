@@ -1,3 +1,10 @@
+<?php
+require_once '../model/conexao.php';
+session_start(); 
+require_once '../controller/UsuarioController.php';
+$usuarioController = new UsuarioController();
+$usuarios = $usuarioController->listar();
+?>
 <html>
     <head>
         <title>Coffee Show</title>
@@ -7,21 +14,34 @@
         <link rel="shortcut icon" href="../public/images/icone2.png" type="image/x-icon">
     </head>
 <body>
-    <nav class="navbar navbar-light bg-light">
-        <div class="content-nav">
+<nav class="navbar navbar-light bg-light">
+        <div class="content-nav" style="<?php if(isset($_SESSION['usuario'])){echo "gap: 25vh !important;";}?>">
             <a class="navbar-brand">
                 <img onclick="login()" src="../public/images/icone2.png" width="32" height="32" class="d-inline-block align-top icone">
                 <img onclick="login()" src="../public/images/logo1.png" height="32" class="d-inline-block align-top icone">
             </a>
-
+    
             <div class="links">
                 <a href="produtos.php">Nossos produtos</a>
                 <a href="sobre.php">Sobre</a>
                 <a href="contato.php">Contato</a>
-                <a href="login-cafe.php">Login</a>
+                <?php
+                if(isset($_SESSION['usuario'])){
+                    echo "<a href='dashboard.php'>Dashboard</a>";
+                    echo "<a href='sair.php'>Logout</a>";
+                }else{
+                    echo "<a href='login-cafe.php'>Login</a>";
+                }
+                ?>
             </div>
         </div>
     </nav>
+
+    <?php
+    if(isset($_SESSION['usuario'])){
+        echo "<a style='color: white; margin-left: 5px; position: absolute; user-select: none;'>logado como: " . $_SESSION['usuario'] . "</a>";
+    }
+    ?>
 
     <div class="page">
         <div class="content-page text-center">
@@ -31,18 +51,18 @@
             <hr class="hr">
             
             <div class="login-form">
-                <form>
+                <form action="../controller/UsuarioController.php?acao=cadastro2" method="POST" >
                     <div class="form-group">
                       <label for="emailinput">Email</label>
-                      <input type="email" class="form-control" id="emailinput" aria-describedby="emailHelp" placeholder="Email">
+                      <input name="email" type="email" class="form-control" id="emailinput" aria-describedby="emailHelp" placeholder="Email">
                     </div>
                     <div class="form-group">
                       <label for="senhainput">Senha</label>
-                      <input type="password" class="form-control" id="senhainput" placeholder="Senha">
+                      <input name="senha" type="password" class="form-control" id="senhainput" placeholder="Senha">
                     </div>
                     <div class="form-group">
                         <label for="codigoinput">Código de segurança</label>
-                        <input type="text" class="form-control" id="codigoinput" placeholder="Código">
+                        <input name="codigo" type="password" class="form-control" id="codigoinput" placeholder="Código">
                         <small id="emailHelp" class="form-text text-muted" style="user-select: none;">Apenas administradores possuem o código para criar novas contas.</small>
                       </div>
 

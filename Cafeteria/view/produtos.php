@@ -1,4 +1,6 @@
 <?php
+require_once '../model/conexao.php';
+session_start(); 
 
 require_once '../controller/ProdutoController.php';
 
@@ -19,20 +21,33 @@ $produtos = $produtoController->listar();
 </head>
 <body>
 <nav class="navbar navbar-light bg-light">
-        <div class="content-nav">
+        <div class="content-nav" style="<?php if(isset($_SESSION['usuario'])){echo "gap: 25vh !important;";}?>">
             <a class="navbar-brand">
                 <img onclick="login()" src="../public/images/icone2.png" width="32" height="32" class="d-inline-block align-top icone">
                 <img onclick="login()" src="../public/images/logo1.png" height="32" class="d-inline-block align-top icone">
             </a>
-
+    
             <div class="links">
                 <a href="produtos.php">Nossos produtos</a>
                 <a href="sobre.php">Sobre</a>
                 <a href="contato.php">Contato</a>
-                <a href="login-cafe.php">Login</a>
+                <?php
+                if(isset($_SESSION['usuario'])){
+                    echo "<a href='dashboard.php'>Dashboard</a>";
+                    echo "<a href='sair.php'>Logout</a>";
+                }else{
+                    echo "<a href='login-cafe.php'>Login</a>";
+                }
+                ?>
             </div>
         </div>
     </nav>
+
+    <?php
+    if(isset($_SESSION['usuario'])){
+        echo "<a style='color: white; margin-left: 5px; position: absolute; user-select: none;'>logado como: " . $_SESSION['usuario'] . "</a>";
+    }
+    ?>
 
 <div class="content">
     <div class="row produtos">
@@ -43,7 +58,7 @@ foreach ($produtos as $produto) {
             echo "<div class='card-body'>";
                 echo "<h5 class='card-title'>" . $produto->getNome() . "</h5>";
                 echo "<p class='card-title'> Tipo:  " . $produto->getTipo() . "</p>";
-                echo "<p class='card-title'> Tipo:  " . $produto->getPreco() . "</p>";
+                echo "<p class='card-title'> Preço:  " . $produto->getPreco() . "</p>";
             echo "</div>";
         echo "</div>";
 }

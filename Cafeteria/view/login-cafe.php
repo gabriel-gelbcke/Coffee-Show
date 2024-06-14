@@ -1,3 +1,7 @@
+<?php
+require_once '../model/conexao.php';
+session_start(); 
+?>
 <html>
     <head>
         <title>Coffee Show</title>
@@ -7,21 +11,34 @@
         <link rel="shortcut icon" href="../public/images/icone2.png" type="image/x-icon">
     </head>
 <body>
-    <nav class="navbar navbar-light bg-light">
-        <div class="content-nav">
+<nav class="navbar navbar-light bg-light">
+        <div class="content-nav" style="<?php if(isset($_SESSION['usuario'])){echo "gap: 25vh !important;";}?>">
             <a class="navbar-brand">
                 <img onclick="login()" src="../public/images/icone2.png" width="32" height="32" class="d-inline-block align-top icone">
                 <img onclick="login()" src="../public/images/logo1.png" height="32" class="d-inline-block align-top icone">
             </a>
-
+    
             <div class="links">
                 <a href="produtos.php">Nossos produtos</a>
                 <a href="sobre.php">Sobre</a>
                 <a href="contato.php">Contato</a>
-                <a href="login-cafe.php">Login</a>
+                <?php
+                if(isset($_SESSION['usuario'])){
+                    echo "<a href='dashboard.php'>Dashboard</a>";
+                    echo "<a href='sair.php'>Logout</a>";
+                }else{
+                    echo "<a href='login-cafe.php'>Login</a>";
+                }
+                ?>
             </div>
         </div>
     </nav>
+
+    <?php
+    if(isset($_SESSION['usuario'])){
+        echo "<a style='color: white; margin-left: 5px; position: absolute; user-select: none;'>logado como: " . $_SESSION['usuario'] . "</a>";
+    }
+    ?>
 
     <div class="page">
         <div class="content-page text-center">
@@ -31,18 +48,38 @@
             <hr class="hr">
             
             <div class="login-form">
-                <form>
+            <form action="../controller/UsuarioController.php?acao=logar" method="POST" >
                     <div class="form-group">
-                      <label for="emailinput">Email</label>
-                      <input type="email" class="form-control" id="emailinput" aria-describedby="emailHelp" placeholder="Email">
+                        <label for="emailinput">Email</label>
+                        <input name="email" type="email" class="form-control" id="emailinput" aria-describedby="emailHelp" placeholder="Email"
+                    <?php 
+                        if(isset($_COOKIE['email']) && isset($_COOKIE['password']) && isset($_COOKIE['check'])){
+                            echo "style='background-color: rgba(191, 222, 255, 0.527); color: black;'";
+                            echo "value='" . $_COOKIE['email'] . "'";
+                        }
+                    ?>
+                    >
                     </div>
                     <div class="form-group">
-                      <label for="senhainput">Senha</label>
-                      <input type="password" class="form-control" id="senhainput" placeholder="Senha">
+                        <label for="senhainput">Senha</label>
+                        <input name="senha" type="password" class="form-control" id="senhainput" placeholder="Senha"
+                    <?php 
+                        if(isset($_COOKIE['email']) && isset($_COOKIE['password']) && isset($_COOKIE['check'])){
+                            echo "style='background-color: rgba(191, 222, 255, 0.527); color: black;'";
+                            echo "value='" . $_COOKIE['password'] . "'";
+                        }
+                    ?>
+                    >
                     </div>
                     <div class="form-group form-check">
-                      <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                      <label class="form-check-label" for="exampleCheck1">Lembrar senha</label>
+                        <input name="remember" type="checkbox" class="form-check-input" id="exampleCheck1"
+                    <?php 
+                        if(isset($_COOKIE['email']) && isset($_COOKIE['password']) && isset($_COOKIE['check'])){
+                            echo "checked";
+                        }
+                    ?>
+                    >
+                        <label class="form-check-label" for="exampleCheck1">Lembrar senha</label>
                     </div>
                     <button id="buttonn" type="submit" class="btn btn-primary">Login</button>
                     <div class="possuo">

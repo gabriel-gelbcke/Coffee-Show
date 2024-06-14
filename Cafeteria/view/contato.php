@@ -1,9 +1,7 @@
 <?php
-
+require_once '../model/conexao.php';
+session_start(); 
 ?>
-
-
-
 <html>
 <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -14,21 +12,34 @@
    <title>Contato</title>
 </head>
 <body>
-   <nav class="navbar navbar-light bg-light">
-    <div class="content-nav">
-        <a class="navbar-brand">
-            <img onclick="login()" src="../public/images/icone2.png" width="32" height="32" class="d-inline-block align-top icone">
-            <img onclick="login()" src="../public/images/logo1.png" height="32" class="d-inline-block align-top icone">
-        </a>
-
-        <div class="links">
-            <a href="produtos.php">Nossos produtos</a>
-            <a href="sobre.php">Sobre</a>
-            <a href="contato.php">Contato</a>
-            <a href="login-cafe.php">Login</a>
+<nav class="navbar navbar-light bg-light">
+        <div class="content-nav" style="<?php if(isset($_SESSION['usuario'])){echo "gap: 25vh !important;";}?>">
+            <a class="navbar-brand">
+                <img onclick="login()" src="../public/images/icone2.png" width="32" height="32" class="d-inline-block align-top icone">
+                <img onclick="login()" src="../public/images/logo1.png" height="32" class="d-inline-block align-top icone">
+            </a>
+    
+            <div class="links">
+                <a href="produtos.php">Nossos produtos</a>
+                <a href="sobre.php">Sobre</a>
+                <a href="contato.php">Contato</a>
+                <?php
+                if(isset($_SESSION['usuario'])){
+                    echo "<a href='dashboard.php'>Dashboard</a>";
+                    echo "<a href='sair.php'>Logout</a>";
+                }else{
+                    echo "<a href='login-cafe.php'>Login</a>";
+                }
+                ?>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
+
+<?php
+    if(isset($_SESSION['usuario'])){
+        echo "<a style='color: white; margin-left: 5px; position: absolute; user-select: none;'>logado como: " . $_SESSION['usuario'] . "</a>";
+    }
+    ?>
 
 
 <div class="content">

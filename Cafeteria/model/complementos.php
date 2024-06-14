@@ -2,12 +2,14 @@
 
 include_once 'conexao.php';
 
-class Usuario {
+class Complemento {
  private $id;
- private $email;
- private $senha;
+ private $nome;
+ private $tipo;
+ private $preco;
+ private $img;
 
- public function __construct($id = null, $email = null, $senha = null) {
+ public function __construct($id = null, $nome = null, $tipo = null, $preco = null, $img = null) {
     $this->id = $id;
     $this->nome = $nome;
     $this->tipo = $tipo;
@@ -56,100 +58,113 @@ public function setImg($img) {
     $this->img = $img;
 }
  
-public function cadastrarProduto($nome, $tipo, $preco, $img) {
+public function cadastrarComplemento($nome, $tipo, $preco, $img) {
+    try {
     $conn = Conexao::conectar();
 
     // Preparar a consulta SQL
-    $sql = "insert into produtos (id, nome, tipo, preco, img) values ('NULL','$nome','$tipo','$preco','$img')";
+    $sql = "insert into complementos (id, nome, tipo, preco, img) values ('NULL','$nome','$tipo','$preco','$img')";
     $stmt = $conn->prepare($sql); 
 
     // Executar a consulta
     if ($stmt->execute()) {
-        echo "Produto cadastrado com sucesso!";
+        echo "Complemento cadastrado com sucesso!";
         echo "<br><br><a href='http://localhost/Cafeteria/view/dashboard.php'>Voltar</a>";
     } else {
-        echo "Erro ao cadastrar produto: " . $stmt->errorInfo()[2];
+        echo "Erro ao cadastrar complemento: " . $stmt->errorInfo()[2];
     }
 
     // Fechar a conexão com o banco de dados
     $conn = null;
+} catch (PDOException $e) {
+    // Exibir mensagem de erro se a conexão falhar
+    echo "Erro ao cadastrar complemento! " . $e->getMessage();
+    return [];
+}
 }
  
-public function removerProduto($id) {
-
-    $conn = Conexao::conectar();
-
-    // Preparar a consulta SQL
-    $sql = "DELETE FROM produtos WHERE id = '$id'";
-    $stmt = $conn->prepare($sql);
-
-    // Executar a consulta
-    if ($stmt->execute()) {
-        echo "Produto removido com sucesso!";
-        echo "<br><br><a href='http://localhost/Cafeteria/view/dashboard.php'>Voltar</a>";
-    } else {
-        echo "Erro ao remover produto: " . $stmt->errorInfo()[2];
-    }
-
-    // Fechar a conexão com o banco de dados
-    $conn = null;
-}
- 
-public function editarProduto($id, $nome, $tipo, $preco, $img) {
-
-    $conn = Conexao::conectar();
-
-    // Preparar a consulta SQL
-    $sql = "UPDATE produtos SET nome = '$nome', tipo = '$tipo', preco = '$preco', img = '$img' WHERE id = '$id'";
-    $stmt = $conn->prepare($sql);
-
-    // Executar a consulta
-    if ($stmt->execute()) {
-        echo "Produto atualizado com sucesso!";
-        echo "<br><br><a href='http://localhost/Cafeteria/view/dashboard.php'>Voltar</a>";
-    } else {
-        echo "Erro ao atualizar produto: " . $stmt->errorInfo()[2];
-    }
-
-    // Fechar a conexão com o banco de dados
-    $conn = null;
-}
- 
-public function ListarProdutos() {
+public function removerComplemento($id) {
     try {
-        // Conectar ao banco de dados
-        $conn = new PDO("mysql:host=localhost; dbname=cafeteria", "root", "");
-        // Definir o modo de erro para exceções
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $conn = Conexao::conectar();
+
+    // Preparar a consulta SQL
+    $sql = "DELETE FROM complementos WHERE id = '$id'";
+    $stmt = $conn->prepare($sql);
+
+    // Executar a consulta
+    if ($stmt->execute()) {
+        echo "Complemento removido com sucesso!";
+        echo "<br><br><a href='http://localhost/Cafeteria/view/dashboard.php'>Voltar</a>";
+    } else {
+        echo "Erro ao remover complemento: " . $stmt->errorInfo()[2];
+    }
+
+    // Fechar a conexão com o banco de dados
+    $conn = null;
+} catch (PDOException $e) {
+    // Exibir mensagem de erro se a conexão falhar
+    echo "Erro ao remover complemento! " . $e->getMessage();
+    return [];
+}
+}
+ 
+public function editarComplemento($id, $nome, $tipo, $preco, $img) {
+    try {
+    $conn = Conexao::conectar();
+
+    // Preparar a consulta SQL
+    $sql = "UPDATE complementos SET nome = '$nome', tipo = '$tipo', preco = '$preco', img = '$img' WHERE id = '$id'";
+    $stmt = $conn->prepare($sql);
+
+    // Executar a consulta
+    if ($stmt->execute()) {
+        echo "Complemento atualizado com sucesso!";
+        echo "<br><br><a href='http://localhost/Cafeteria/view/dashboard.php'>Voltar</a>";
+    } else {
+        echo "Erro ao atualizar complemento: " . $stmt->errorInfo()[2];
+    }
+
+    // Fechar a conexão com o banco de dados
+    $conn = null;
+} catch (PDOException $e) {
+    // Exibir mensagem de erro se a conexão falhar
+    echo "Erro ao editar complemento! " . $e->getMessage();
+    return [];
+}
+}
+ 
+public function ListarComplementos() {
+    try {
+        $conn = Conexao::conectar();
 
         // Preparar a consulta SQL
-        $sql = "SELECT * FROM produtos";
+        $sql = "SELECT * FROM complementos ORDER BY id";
         $stmt = $conn->prepare($sql);
 
         // Executar a consulta
         $stmt->execute();
 
         // Obter os resultados da consulta
-        $produtos = [];
+        $complementos = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $produto = new Produto();
-            $produto->setId($row["id"]);
-            $produto->setNome($row["nome"]);
-            $produto->setTipo($row["tipo"]);
-            $produto->setPreco($row["preco"]);
-            $produto->setImg($row["img"]);
+            $complemento = new Complemento();
+            $complemento->setId($row["id"]);
+            $complemento->setNome($row["nome"]);
+            $complemento->setTipo($row["tipo"]);
+            $complemento->setPreco($row["preco"]);
+            $complemento->setImg($row["img"]);
 
-            $produtos[] = $produto;
+            $complementos[] = $complemento;
 
         }
         // Fechar a conexão com o banco de dados
         $conn = null;
 
-        // Retornar o array de produtos
-        return $produtos;
+        // Retornar o array de complementos
+        return $complementos;
     } catch (PDOException $e) {
         // Exibir mensagem de erro se a conexão falhar
-        echo "Erro na conexão com o banco de dados: " . $e->getMessage();
+        echo "Erro ao listar complementos! " . $e->getMessage();
         return [];
     }
 }

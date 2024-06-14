@@ -1,6 +1,6 @@
 <?php
-
-
+require_once '../model/conexao.php';
+session_start(); 
 ?>
 
 <html>
@@ -12,21 +12,34 @@
         <link rel="shortcut icon" href="../public/images/icone2.png" type="image/x-icon">
     </head>
 <body>
-    <nav class="navbar navbar-light bg-light">
-        <div class="content-nav">
+<nav class="navbar navbar-light bg-light">
+        <div class="content-nav" style="<?php if(isset($_SESSION['usuario'])){echo "gap: 25vh !important;";}?>">
             <a class="navbar-brand">
                 <img onclick="login()" src="../public/images/icone2.png" width="32" height="32" class="d-inline-block align-top icone">
                 <img onclick="login()" src="../public/images/logo1.png" height="32" class="d-inline-block align-top icone">
             </a>
-
+    
             <div class="links">
                 <a href="produtos.php">Nossos produtos</a>
                 <a href="sobre.php">Sobre</a>
                 <a href="contato.php">Contato</a>
-                <a href="login-cafe.php">Login</a>
+                <?php
+                if(isset($_SESSION['usuario'])){
+                    echo "<a href='dashboard.php'>Dashboard</a>";
+                    echo "<a href='sair.php'>Logout</a>";
+                }else{
+                    echo "<a href='login-cafe.php'>Login</a>";
+                }
+                ?>
             </div>
         </div>
     </nav>
+
+    <?php
+    if(isset($_SESSION['usuario'])){
+        echo "<a style='color: white; margin-left: 5px; position: absolute; user-select: none;'>logado como: " . $_SESSION['usuario'] . "</a>";
+    }
+    ?>
 
     <div class="page">
         <div class="content-page text-center">
@@ -47,17 +60,6 @@
                 <img src="../public/images/coffe-img1.png" class="img-fluid img-thumbnail">
                 <img src="../public/images/coffe-img2.png" class="img-fluid img-thumbnail">
             </div>
-
-            <!-- TESTE -->
-
-            <!-- <table>
-                <tr>
-                    <th>ID</th>
-                    <th>Produto</th>
-                </tr>
-            </table> -->
-
-            <!-- TESTE -->
 
             <div class="text-center images">
                 <div>
