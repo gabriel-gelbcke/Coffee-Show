@@ -39,7 +39,7 @@ footer {
 
 .content{
     padding-top: 50px;
-    width: 100vw;
+    /* width: 100vw; */
     min-height: 800px !important;
     display: flex;
     justify-content: center;

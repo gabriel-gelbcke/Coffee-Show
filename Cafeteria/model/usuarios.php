@@ -7,7 +7,7 @@ class Usuario {
  private $email;
  private $senha;
 
- public function __construct($id = null, $email = null, $senha = null) {
+public function __construct($id = null, $email = null, $senha = null) {
     $this->id = $id;
     $this->email = $email;
     $this->senha = $senha;
@@ -45,17 +45,16 @@ public function logarUsuario($email, $senha) {
     $sql = "SELECT * FROM usuario WHERE email = '$email' AND senha = '$senha'";
     $stmt = $conn->prepare($sql);
     $stmt->execute();
-    $user = $stmt->fetch(); // Recuperar dados do usuário
+    $user = $stmt->fetch();
 
     if (!$user) {
         echo "Usuário ou senha incorretas!";
         echo "<br><br><a href='http://localhost/Cafeteria/view/login-cafe.php'>Voltar</a>";
     } else {
         echo "Usuário ou senha incorretas!";
-        return $user; // Retornar dados de usuário válidos
+        return $user;
     }
 } catch (PDOException $e) {
-    // Exibir mensagem de erro se a conexão falhar
     echo "Erro ao fazer login! " . $e->getMessage();
     return null;
 }
@@ -77,11 +76,9 @@ public function cadastrarUsuario($email, $senha) {
         echo "<br><br><a href='http://localhost/Cafeteria/view/dashboard.php'>Voltar</a>";
     }else{
 
-    // Preparar a consulta SQL
     $sql = "insert into usuario (id, email, senha) values ('NULL','$email','$senha')";
     $stmt = $conn->prepare($sql); 
 
-    // Executar a consulta
     if ($stmt->execute()) {
         echo "Usuário cadastrado com sucesso!";
         echo "<br><br><a href='http://localhost/Cafeteria/view/dashboard.php'>Voltar</a>";
@@ -89,11 +86,9 @@ public function cadastrarUsuario($email, $senha) {
         echo "Erro ao cadastrar usuario: " . $stmt->errorInfo()[2];
     }
 
-    // Fechar a conexão com o banco de dados
     $conn = null;
 } 
 }catch (PDOException $e) {
-    // Exibir mensagem de erro se a conexão falhar
     echo "Erro ao cadastrar usuário! " . $e->getMessage();
     return [];
 }
@@ -113,11 +108,9 @@ public function cadastrarUsuario2($email, $senha) {
         echo "<br><br><a href='http://localhost/Cafeteria/view/cadastro-cafe.php'>Voltar</a>";
     }else{
 
-    // Preparar a consulta SQL
     $sql = "insert into usuario (id, email, senha) values ('NULL','$email','$senha')";
     $stmt = $conn->prepare($sql); 
 
-    // Executar a consulta
     if ($stmt->execute()) {
         echo "Usuário cadastrado com sucesso!";
         echo "<br><br><a href='http://localhost/Cafeteria/view/login-cafe.php'>Voltar</a>";
@@ -125,11 +118,9 @@ public function cadastrarUsuario2($email, $senha) {
         echo "Erro ao cadastrar usuario: " . $stmt->errorInfo()[2];
     }
 
-    // Fechar a conexão com o banco de dados
     $conn = null;
 } 
 }catch (PDOException $e) {
-    // Exibir mensagem de erro se a conexão falhar
     echo "Erro ao cadastrar usuário! " . $e->getMessage();
     return [];
 }
@@ -139,11 +130,9 @@ public function removerUsuario($id) {
     try {
     $conn = Conexao::conectar();
 
-    // Preparar a consulta SQL
     $sql = "DELETE FROM usuario WHERE id = '$id'";
     $stmt = $conn->prepare($sql);
 
-    // Executar a consulta
     if ($stmt->execute()) {
         echo "Usuário removido com sucesso!";
         echo "<br><br><a href='http://localhost/Cafeteria/view/dashboard.php'>Voltar</a>";
@@ -151,24 +140,20 @@ public function removerUsuario($id) {
         echo "Erro ao remover usuário: " . $stmt->errorInfo()[2];
     }
 
-    // Fechar a conexão com o banco de dados
     $conn = null;
 } catch (PDOException $e) {
-    // Exibir mensagem de erro se a conexão falhar
     echo "Erro ao remover usuário! " . $e->getMessage();
     return [];
 }
 }
- 
+
 public function editarUsuario($id, $email, $senha) {
     try {
     $conn = Conexao::conectar();
 
-    // Preparar a consulta SQL
     $sql = "UPDATE usuario SET  email = '$email', senha = '$senha' WHERE id = '$id'";
     $stmt = $conn->prepare($sql);
 
-    // Executar a consulta
     if ($stmt->execute()) {
         echo "usuário atualizado com sucesso!";
         echo "<br><br><a href='http://localhost/Cafeteria/view/dashboard.php'>Voltar</a>";
@@ -176,10 +161,8 @@ public function editarUsuario($id, $email, $senha) {
         echo "Erro ao atualizar usuário: " . $stmt->errorInfo()[2];
     }
 
-    // Fechar a conexão com o banco de dados
     $conn = null;
 } catch (PDOException $e) {
-    // Exibir mensagem de erro se a conexão falhar
     echo "Erro ao editar usuário! " . $e->getMessage();
     return [];
 }
@@ -189,31 +172,23 @@ public function ListarUsuarios() {
     try {
         $conn = Conexao::conectar();
 
-        // Preparar a consulta SQL
         $sql = "SELECT * FROM usuario ORDER BY id";
         $stmt = $conn->prepare($sql);
 
-        // Executar a consulta
         $stmt->execute();
 
-        // Obter os resultados da consulta
         $usuarios = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $usuario = new Usuario();
             $usuario->setId($row["id"]);
             $usuario->setEmail($row["email"]);
             $usuario->setSenha($row["senha"]);
-
             $usuarios[] = $usuario;
-
         }
-        // Fechar a conexão com o banco de dados
         $conn = null;
 
-        // Retornar o array de produtos
         return $usuarios;
     } catch (PDOException $e) {
-        // Exibir mensagem de erro se a conexão falhar
         echo "Erro ao listar usuários! " . $e->getMessage();
         return [];
     }

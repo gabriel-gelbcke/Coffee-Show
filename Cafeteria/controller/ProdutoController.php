@@ -4,7 +4,6 @@ require_once '../model/produtos.php';
 class ProdutoController {
 
     public function escolha($submit){
-
         switch($submit){
             case "cadastro":
                 $nome = $_POST['nome'];

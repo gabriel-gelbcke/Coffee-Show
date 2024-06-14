@@ -17,7 +17,6 @@ class Complemento {
     $this->img = $img;
 }
 
-// Getters e Setters
 public function getId() {
     return $this->id;
 }
@@ -62,11 +61,9 @@ public function cadastrarComplemento($nome, $tipo, $preco, $img) {
     try {
     $conn = Conexao::conectar();
 
-    // Preparar a consulta SQL
     $sql = "insert into complementos (id, nome, tipo, preco, img) values ('NULL','$nome','$tipo','$preco','$img')";
     $stmt = $conn->prepare($sql); 
 
-    // Executar a consulta
     if ($stmt->execute()) {
         echo "Complemento cadastrado com sucesso!";
         echo "<br><br><a href='http://localhost/Cafeteria/view/dashboard.php'>Voltar</a>";
@@ -74,10 +71,8 @@ public function cadastrarComplemento($nome, $tipo, $preco, $img) {
         echo "Erro ao cadastrar complemento: " . $stmt->errorInfo()[2];
     }
 
-    // Fechar a conexão com o banco de dados
     $conn = null;
 } catch (PDOException $e) {
-    // Exibir mensagem de erro se a conexão falhar
     echo "Erro ao cadastrar complemento! " . $e->getMessage();
     return [];
 }
@@ -87,11 +82,9 @@ public function removerComplemento($id) {
     try {
     $conn = Conexao::conectar();
 
-    // Preparar a consulta SQL
     $sql = "DELETE FROM complementos WHERE id = '$id'";
     $stmt = $conn->prepare($sql);
 
-    // Executar a consulta
     if ($stmt->execute()) {
         echo "Complemento removido com sucesso!";
         echo "<br><br><a href='http://localhost/Cafeteria/view/dashboard.php'>Voltar</a>";
@@ -99,10 +92,8 @@ public function removerComplemento($id) {
         echo "Erro ao remover complemento: " . $stmt->errorInfo()[2];
     }
 
-    // Fechar a conexão com o banco de dados
     $conn = null;
 } catch (PDOException $e) {
-    // Exibir mensagem de erro se a conexão falhar
     echo "Erro ao remover complemento! " . $e->getMessage();
     return [];
 }
@@ -112,11 +103,9 @@ public function editarComplemento($id, $nome, $tipo, $preco, $img) {
     try {
     $conn = Conexao::conectar();
 
-    // Preparar a consulta SQL
     $sql = "UPDATE complementos SET nome = '$nome', tipo = '$tipo', preco = '$preco', img = '$img' WHERE id = '$id'";
     $stmt = $conn->prepare($sql);
 
-    // Executar a consulta
     if ($stmt->execute()) {
         echo "Complemento atualizado com sucesso!";
         echo "<br><br><a href='http://localhost/Cafeteria/view/dashboard.php'>Voltar</a>";
@@ -124,10 +113,8 @@ public function editarComplemento($id, $nome, $tipo, $preco, $img) {
         echo "Erro ao atualizar complemento: " . $stmt->errorInfo()[2];
     }
 
-    // Fechar a conexão com o banco de dados
     $conn = null;
 } catch (PDOException $e) {
-    // Exibir mensagem de erro se a conexão falhar
     echo "Erro ao editar complemento! " . $e->getMessage();
     return [];
 }
@@ -137,14 +124,11 @@ public function ListarComplementos() {
     try {
         $conn = Conexao::conectar();
 
-        // Preparar a consulta SQL
         $sql = "SELECT * FROM complementos ORDER BY id";
         $stmt = $conn->prepare($sql);
 
-        // Executar a consulta
         $stmt->execute();
 
-        // Obter os resultados da consulta
         $complementos = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $complemento = new Complemento();
@@ -157,13 +141,10 @@ public function ListarComplementos() {
             $complementos[] = $complemento;
 
         }
-        // Fechar a conexão com o banco de dados
         $conn = null;
 
-        // Retornar o array de complementos
         return $complementos;
     } catch (PDOException $e) {
-        // Exibir mensagem de erro se a conexão falhar
         echo "Erro ao listar complementos! " . $e->getMessage();
         return [];
     }

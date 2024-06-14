@@ -62,11 +62,9 @@ public function cadastrarProduto($nome, $tipo, $preco, $img) {
     try {
     $conn = Conexao::conectar();
 
-    // Preparar a consulta SQL
     $sql = "insert into produtos (id, nome, tipo, preco, img) values ('NULL','$nome','$tipo','$preco','$img')";
     $stmt = $conn->prepare($sql); 
 
-    // Executar a consulta
     if ($stmt->execute()) {
         echo "Produto cadastrado com sucesso!";
         echo "<br><br><a href='http://localhost/Cafeteria/view/dashboard.php'>Voltar</a>";
@@ -74,10 +72,8 @@ public function cadastrarProduto($nome, $tipo, $preco, $img) {
         echo "Erro ao cadastrar produto: " . $stmt->errorInfo()[2];
     }
 
-    // Fechar a conexão com o banco de dados
     $conn = null;
 } catch (PDOException $e) {
-    // Exibir mensagem de erro se a conexão falhar
     echo "Erro ao cadastrar produto! " . $e->getMessage();
     echo "<br><br><a href='http://localhost/Cafeteria/view/dashboard.php'>Voltar</a>";
     return [];
@@ -88,11 +84,9 @@ public function removerProduto($id) {
     try {
     $conn = Conexao::conectar();
 
-    // Preparar a consulta SQL
     $sql = "DELETE FROM produtos WHERE id = '$id'";
     $stmt = $conn->prepare($sql);
 
-    // Executar a consulta
     if ($stmt->execute()) {
         echo "Produto removido com sucesso!";
         echo "<br><br><a href='http://localhost/Cafeteria/view/dashboard.php'>Voltar</a>";
@@ -100,10 +94,8 @@ public function removerProduto($id) {
         echo "Erro ao remover produto: " . $stmt->errorInfo()[2];
     }
 
-    // Fechar a conexão com o banco de dados
     $conn = null;
 } catch (PDOException $e) {
-    // Exibir mensagem de erro se a conexão falhar
     echo "Erro ao remover produto! " . $e->getMessage();
     echo "<br><br><a href='http://localhost/Cafeteria/view/dashboard.php'>Voltar</a>";
     return [];
@@ -114,11 +106,9 @@ public function editarProduto($id, $nome, $tipo, $preco, $img) {
     try {
     $conn = Conexao::conectar();
 
-    // Preparar a consulta SQL
     $sql = "UPDATE produtos SET nome = '$nome', tipo = '$tipo', preco = '$preco', img = '$img' WHERE id = '$id'";
     $stmt = $conn->prepare($sql);
 
-    // Executar a consulta
     if ($stmt->execute()) {
         echo "Produto atualizado com sucesso!";
         echo "<br><br><a href='http://localhost/Cafeteria/view/dashboard.php'>Voltar</a>";
@@ -127,10 +117,8 @@ public function editarProduto($id, $nome, $tipo, $preco, $img) {
         echo "<br><br><a href='http://localhost/Cafeteria/view/dashboard.php'>Voltar</a>";
     }
 
-    // Fechar a conexão com o banco de dados
     $conn = null;
 } catch (PDOException $e) {
-    // Exibir mensagem de erro se a conexão falhar
     echo "Erro ao editar produto! " . $e->getMessage();
     echo "<br><br><a href='http://localhost/Cafeteria/view/dashboard.php'>Voltar</a>";
     return [];
@@ -141,14 +129,11 @@ public function ListarProdutos() {
     try {
         $conn = Conexao::conectar();
 
-        // Preparar a consulta SQL
         $sql = "SELECT * FROM produtos ORDER BY id";
         $stmt = $conn->prepare($sql);
 
-        // Executar a consulta
         $stmt->execute();
 
-        // Obter os resultados da consulta
         $produtos = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $produto = new Produto();
@@ -161,13 +146,10 @@ public function ListarProdutos() {
             $produtos[] = $produto;
 
         }
-        // Fechar a conexão com o banco de dados
         $conn = null;
 
-        // Retornar o array de produtos
         return $produtos;
     } catch (PDOException $e) {
-        // Exibir mensagem de erro se a conexão falhar
         echo "<br><br><a href='http://localhost/Cafeteria/view/dashboard.php'>Voltar</a>";
         echo "Erro ao listar produto! " . $e->getMessage();
         return [];
