@@ -7,6 +7,11 @@ require_once '../controller/ProdutoController.php';
 $produtoController = new ProdutoController();
 $produtos = $produtoController->listar();
 
+require_once '../controller/ComplementoController.php';
+
+$complementoController = new ComplementoController();
+$complementos = $complementoController->listar();
+
 ?>
 
 <!DOCTYPE html>
@@ -58,7 +63,19 @@ foreach ($produtos as $produto) {
             echo "<div class='card-body'>";
                 echo "<h5 class='card-title'>" . $produto->getNome() . "</h5>";
                 echo "<p class='card-title'> Tipo:  " . $produto->getTipo() . "</p>";
-                echo "<p class='card-title'> Preço:  " . $produto->getPreco() . "</p>";
+                echo "<p class='card-title'> Preço:  R$" . $produto->getPreco() . ",00</p>";
+            echo "</div>";
+        echo "</div>";
+}
+?>
+<?php
+foreach ($complementos as $complemento) {
+        echo "<div class='card' style='width: 18rem;'>";
+            echo "<img class='card-img-top' src='" . $complemento->getImg() . "' alt='Card image cap'>";
+            echo "<div class='card-body'>";
+                echo "<h5 class='card-title'>" . $complemento->getNome() . "</h5>";
+                echo "<p class='card-title'> Tipo:  " . $complemento->getTipo() . "</p>";
+                echo "<p class='card-title'> Preço:  R$" . $complemento->getPreco() . ",00</p>";
             echo "</div>";
         echo "</div>";
 }

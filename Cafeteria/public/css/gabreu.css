@@ -136,6 +136,18 @@ form{
     gap: 30px;
 }
 
+.table {
+    th,
+    td {
+      vertical-align: top;
+      word-break: break-all !important;
+    }
+  
+    thead th {
+      vertical-align: bottom;
+      word-break: break-all !important;
+    }
+}
 
 .dash-nav a{
     background-color: rgb(211, 211, 211);

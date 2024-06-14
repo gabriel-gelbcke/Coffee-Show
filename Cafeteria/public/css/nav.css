@@ -6,8 +6,6 @@
     }
 }
 
-
-
 .kanit-regular {
     font-family: "Kanit", sans-serif;
     font-weight: 400;
@@ -72,4 +70,17 @@ body{
     color: black;
     text-decoration: none;
     background-color: rgba(128, 128, 128, 0.473);
+}
+
+.table {
+    th,
+    td {
+      vertical-align: top;
+      word-break: break-all !important;
+    }
+  
+    thead th {
+      vertical-align: bottom;
+      word-break: break-all !important;
+    }
 }

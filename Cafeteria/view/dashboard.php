@@ -21,8 +21,8 @@ $usuarios = $usuarioController->listar();
     <head>
         <title>Coffee Show</title>
         <script src="../public/js/verify.js"></script>
-        <link rel="stylesheet" href="../public/css/gabreu.css">
-        <link rel="stylesheet" href="../public/css/nav.css">
+        <link rel="stylesheet" type="text/css" href="../public/css/gabreu.css">
+        <link rel="stylesheet" type="text/css" href="../public/css/nav.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <link rel="shortcut icon" href="../public/images/icone2.png" type="image/x-icon">
     </head>
@@ -201,10 +201,10 @@ $usuarios = $usuarioController->listar();
                         foreach ($produtos as $produto) {
                             echo "<tr>";
                                 echo "<th width='5%' scope='row'>" . $produto->getId() . "</th>";
-                                echo "<td width='20%'>" . $produto->getNome() . "</td>";
-                                echo "<td width='20%'>" . $produto->getTipo() . "</td>";
-                                echo "<td width='20%'>" . $produto->getPreco() . "</td>";
-                                echo "<td>" . $produto->getImg() . "</td>";
+                                echo "<td width='5%'>" . $produto->getNome() . "</td>";
+                                echo "<td width='5%'>" . $produto->getTipo() . "</td>";
+                                echo "<td width='5%'>" . $produto->getPreco() . "</td>";
+                                echo "<td width='20%'>" . $produto->getImg() . "</td>";
                             echo "</tr>";
                         }
                     ?>
